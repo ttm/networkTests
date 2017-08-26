@@ -2,7 +2,10 @@
 <html>
 <head>
   <title>ccNetViz layouts example</title>
-  <style type="text/css">
+  <script src="./libs/jquery.min.js"></script>
+  <script src="./libs/d3.min.js"></script>
+  <script src="../src/d3gadget.js"></script>
+  <style>
     #body, canvas {
       width: 500px;
       height: 500px;
@@ -16,8 +19,6 @@
 /*      float: right;*/
     }
   </style>
-  <script src="./libs/jquery.min.js"></script>
-  <script src="../dist/ccNetViz.js"></script>
 </head>
 <body>
   <h1>Layouts example</h1>
@@ -70,30 +71,33 @@
     };
 
     var graph;
+    var tsvg;
     var el;
     function showGraph(data){
       adata = data;
       if(el)
         el.parentNode.removeChild(el);
-      document.getElementById("body").appendChild(el = document.createElement("canvas"));
 
       var startTime = new Date();
 
-      if(graph) graph.remove();	//if there was an old graph, remove its handlers from DOM content
+      if(tsvg) tsvg.remove();	//if there was an old graph, remove its handlers from DOM content
 
-      graph = new ccNetViz(el, {
-	styles: {
-	  node: { texture: "images/node.png", label: { hideSize: 16 } },
-	  node: { label: { hideSize: 16 } },
-	  edge: { arrow: { texture: "images/arrow.png" } }
-	}});
-      if (layout == null){
-          layout = "tree";
-      }
-      graph.set(data.nodes, data.edges, layout);
-      console.log("antes do draw");
-      graph.draw();
+      mkLayout(data.nodes, data.edges);
+      tsvg = d3graph(data.nodes, data.edges);
+      // graph = new ccNetViz(el, {
+      //   styles: {
+      //     node: { texture: "images/node.png", label: { hideSize: 16 } },
+      //     node: { label: { hideSize: 16 } },
+      //     edge: { arrow: { texture: "images/arrow.png" } }
+      //   }});
+      // if (layout == null){
+      //     layout = "tree";
+      // }
+      // graph.set(data.nodes, data.edges, layout);
+      // console.log("antes do draw");
+      // graph.draw();
       console.log("depois do draw");
+
       
       $('#nodesCnt').text(data.nodes.length);
       $('#edgesCnt').text(data.edges.length);
