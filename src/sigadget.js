@@ -19,70 +19,36 @@ function transformData (nodes, edges) {
 	return adata;
 }
 
-function fooGraph{
-
-	var i,
-	    s,
-	    o,
-	    N = 1000,
-	    E = 5000,
-	    C = 5,
-	    d = 0.5,
-	    cs = [],
-	    g = {
+function fooGraph (nodes, edges) {
+	var g = {
 	      nodes: [],
 	      edges: []
 	    };
-
 	// Generate the graph:
-	for (i = 0; i < C; i++)
-	  cs.push({
-	    id: i,
-	    nodes: [],
-	    color: '#' + (
-	      Math.floor(Math.random() * 16777215).toString(16) + '000000'
-	    ).substr(0, 6)
-	  });
-
-	for (i = 0; i < N; i++) {
-	  o = cs[(Math.random() * C) | 0];
+	for (let i = 0; i < nodes.length; i++) {
 	  g.nodes.push({
-	    id: 'n' + i,
-	    label: 'Node' + i,
-	    x: 100 * Math.cos(2 * i * Math.PI / N),
-	    y: 100 * Math.sin(2 * i * Math.PI / N),
-	    size: Math.random(),
-	    color: o.color
+	    id: nodes[i].label,
+	    // label: 'Node' + i,
+	    x: 100 * Math.random(),
+	    y: 100 * Math.random(),
+	    size: .01,
+	    color: "#50c781"
 	  });
-	  o.nodes.push('n' + i);
 	}
 
-	for (i = 0; i < E; i++) {
-	  if (Math.random() < 1 - d)
-	    g.edges.push({
-	      id: 'e' + i,
-	      source: 'n' + ((Math.random() * N) | 0),
-	      target: 'n' + ((Math.random() * N) | 0)
-	    });
-	  else {
-	    o = cs[(Math.random() * C) | 0]
-	    g.edges.push({
-	      id: 'e' + i,
-	      source: o.nodes[(Math.random() * o.nodes.length) | 0],
-	      target: o.nodes[(Math.random() * o.nodes.length) | 0]
-	    });
-	  }
+	for (let i = 0; i < edges.length; i++) {
+	  let n1 = nodes[edges[i].source];
+	  let n2 = nodes[edges[i].target];
+	  g.edges.push({
+	    id: n1.label+n2.label+Math.random(),
+	    source: n1.label,
+	    target: n2.label,
+	  });
 	}
 
 	s = new sigma({
 	  graph: g,
 	  container: 'body',
-	  settings: {
-	    drawEdges: false
-	  }
 	});
-
-	// Start the ForceAtlas2 algorithm:
-	s.startForceAtlas2({worker: true, barnesHutOptimize: false});
 }
 
