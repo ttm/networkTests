@@ -35,7 +35,6 @@ function fooGraph (nodes, edges) {
 	    color: "#50c781"
 	  });
 	}
-
 	for (let i = 0; i < edges.length; i++) {
 	  let n1 = nodes[edges[i].source];
 	  let n2 = nodes[edges[i].target];
@@ -45,10 +44,8 @@ function fooGraph (nodes, edges) {
 	    target: n2.label,
 	  });
 	}
-
 	s = new sigma({
 	  graph: g,
 	  container: 'body',
 	});
 }
-
